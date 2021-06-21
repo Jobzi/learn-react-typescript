@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import { Information } from './interfaces/types'
+import List from './components/List'
+import Form from './components/Form'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const INITAL_VALUES = { avatar: 'https://i.pravatar.cc/150?img=Jobzi', name: 'Jipson Murillo', age: 25, description: 'Hola soy una buena descripcion para Jipson' }
+interface AppState{
+  information:Array<Information>
+  pokemones:number
 }
 
-export default App;
+function App () {
+  const [items, setItems] = useState<AppState['information']>([INITAL_VALUES])
+  const [pokemon, setPokemon] = useState<AppState['pokemones']>(0)
+
+  const handleChange = () => {
+    setItems([...items, { avatar: 'https://i.pravatar.cc/150?img=50', name: 'Jobz5', age: 23, description: 'Hola soy una buena descripcion' }])
+    setPokemon(prev => prev + 1)
+  }
+  const handleNewItem = (newItem:Information) => {
+    setItems(items => [...items, newItem])
+  }
+  return (
+    <div className="App">
+      <List items={items} pokemon={pokemon}/>
+      <Form onNewItem={handleNewItem}/>
+      <button onClick={handleChange}>Add other Item</button>
+    </div>
+  )
+}
+
+export default App
